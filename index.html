@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Gap Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">Community Learning MVP</p>
+      <h1>Skill Gap Analyzer</h1>
+      <p class="hero-copy">
+        Take a short assessment across modern web development topics and get a
+        practical learning path based on your weakest categories.
+      </p>
+      <div class="hero-meta">
+        <span>5 categories</span>
+        <span>10 questions</span>
+        <span>~4 minutes</span>
+      </div>
+    </section>
+
+    <section class="app-card">
+      <div class="app-topbar">
+        <div>
+          <p class="app-label">Assessment Flow</p>
+          <h2 id="screenTitle">Ready to assess</h2>
+        </div>
+        <button id="restartBtn" class="ghost-button" type="button" hidden>Restart</button>
+      </div>
+
+      <div id="app" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <template id="introTemplate">
+    <div class="intro-grid">
+      <div class="panel panel-accent">
+        <h3>What this measures</h3>
+        <ul class="clean-list">
+          <li>HTML/CSS fundamentals</li>
+          <li>JavaScript basics</li>
+          <li>React / JSX concepts</li>
+          <li>TypeScript basics</li>
+          <li>Debugging and problem solving</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>How it works</h3>
+        <p>
+          Each answer contributes to a category score. After the final question,
+          the app highlights your strongest areas, weakest areas, and what to learn next.
+        </p>
+        <button id="startBtn" class="primary-button" type="button">Start Assessment</button>
+      </div>
+    </div>
+  </template>
+
+  <template id="quizTemplate">
+    <div class="progress-block">
+      <div class="progress-copy">
+        <span id="questionCounter"></span>
+        <span id="categoryPill" class="pill"></span>
+      </div>
+      <div class="progress-track" aria-hidden="true">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+    </div>
+
+    <article class="question-card">
+      <p id="questionPrompt" class="question-prompt"></p>
+      <div id="optionList" class="option-list" role="radiogroup" aria-label="Answer options"></div>
+    </article>
+
+    <div class="quiz-actions">
+      <button id="backBtn" class="ghost-button" type="button">Back</button>
+      <button id="nextBtn" class="primary-button" type="button" disabled>Next</button>
+    </div>
+  </template>
+
+  <template id="resultsTemplate">
+    <div class="results-grid">
+      <section class="panel panel-accent">
+        <h3>Your assessment summary</h3>
+        <p id="summaryText"></p>
+        <div class="score-chip-row">
+          <div class="score-chip">
+            <span>Total Score</span>
+            <strong id="totalScoreValue"></strong>
+          </div>
+          <div class="score-chip">
+            <span>Top Strength</span>
+            <strong id="topStrengthValue"></strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h3>Category performance</h3>
+        <div id="scoreBreakdown" class="breakdown-list"></div>
+      </section>
+    </div>
+
+    <div class="results-grid bottom-grid">
+      <section class="panel">
+        <h3>Skill gaps to focus on</h3>
+        <div id="gapList" class="recommendation-list"></div>
+      </section>
+
+      <section class="panel">
+        <h3>Recommended learning path</h3>
+        <div id="recommendationList" class="recommendation-list"></div>
+      </section>
+    </div>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
