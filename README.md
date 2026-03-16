@@ -19,6 +19,7 @@ A static web app that assesses web development skills, identifies knowledge gaps
 **What it does**
 
 - guides a learner through a 10-question assessment
+- lets the learner choose beginner, intermediate, or advanced assessment tracks
 - scores answers across 5 web-development categories
 - highlights strongest and weakest skill areas
 - generates rule-based learning recommendations
@@ -26,7 +27,7 @@ A static web app that assesses web development skills, identifies knowledge gaps
 
 **Why this project is interesting**
 
-This app focuses on a real product problem rather than just UI rendering: how to take structured user input, transform it into meaningful feedback, and present that feedback in a way that feels actionable.
+This app focuses on a real product problem rather than just UI rendering: how to take structured user input, transform it into meaningful feedback, and present that feedback in a way that feels actionable for different learner levels.
 
 It also shows a few strengths that are useful in portfolio work:
 
@@ -43,13 +44,14 @@ If you want to preview the results screen quickly, the app supports demo modes:
 - `?demo=perfect`
 - `?demo=mixed`
 - `?demo=weak`
+- optional `?level=beginner|intermediate|advanced`
 
 Examples:
 
 ```text
 http://127.0.0.1:4173/?demo=perfect
-http://127.0.0.1:4173/?demo=mixed
-http://127.0.0.1:4173/?demo=weak
+http://127.0.0.1:4173/?level=intermediate&demo=mixed
+http://127.0.0.1:4173/?level=advanced&demo=weak
 ```
 
 ## Screens and User Flow
@@ -87,7 +89,7 @@ The current MVP covers five areas:
 - TypeScript Basics
 - Debugging & Problem Solving
 
-Each category currently includes two questions.
+Each assessment level currently includes two questions per category.
 
 ## Tech Stack
 
@@ -116,7 +118,7 @@ No framework or build step is required.
 
 ### Data-Driven Assessment Model
 
-Questions, categories, and recommendation content all live in JavaScript objects inside `app.js`. That makes the app easy to expand without rewriting the rendering logic.
+Assessment levels, questions, categories, and recommendation content all live in JavaScript objects inside `app.js`. That makes the app easy to expand without rewriting the rendering logic.
 
 ### Simple State Management
 
@@ -182,21 +184,27 @@ Using the static server is the more reliable option for local testing.
 
 ### Add or edit questions
 
-Update the `questions` array in `app.js`.
+Update the relevant level inside `assessmentQuestions` in `app.js`.
 
 Example shape:
 
 ```js
 {
-  id: "js-1",
+  id: "int-js-1",
   category: "javascript",
-  prompt: "What does Array.map() return?",
+  prompt: "What is the main difference between Array.forEach() and Array.map()?",
   options: [
-    { label: "The original array after mutation", score: 0 },
-    { label: "A new array of transformed values", score: 1 }
+    { label: "forEach always mutates the array but map never does", score: 0 },
+    { label: "map returns a new array, while forEach is mainly for side effects", score: 1 }
   ]
 }
 ```
+
+### Add or change an assessment level
+
+1. Add a level entry in `assessmentLevels` in `app.js`.
+2. Add that level's questions in `assessmentQuestions`.
+3. Optionally update intro copy in `index.html` if the track count changes.
 
 ### Add a new skill category
 

@@ -15,13 +15,13 @@
       <p class="eyebrow">Community Learning MVP</p>
       <h1>Skill Gap Analyzer</h1>
       <p class="hero-copy">
-        Take a short assessment across modern web development topics and get a
-        practical learning path based on your weakest categories.
+        Choose a beginner, intermediate, or advanced assessment across modern
+        web development topics and get a practical learning path based on your weakest categories.
       </p>
       <div class="hero-meta">
+        <span>3 assessment levels</span>
         <span>5 categories</span>
-        <span>10 questions</span>
-        <span>~4 minutes</span>
+        <span>10 questions per track</span>
       </div>
     </section>
 
@@ -51,6 +51,15 @@
         </ul>
       </div>
       <div class="panel">
+        <h3>Pick your level</h3>
+        <div id="assessmentLevelList" class="level-list"></div>
+        <div class="level-summary">
+          <p id="selectedLevelDescription"></p>
+          <div class="hero-meta compact-meta">
+            <span><strong id="selectedLevelQuestionCount"></strong> questions</span>
+            <span id="selectedLevelDuration"></span>
+          </div>
+        </div>
         <h3>How it works</h3>
         <p>
           Each answer contributes to a category score. After the final question,
@@ -65,7 +74,10 @@
     <div class="progress-block">
       <div class="progress-copy">
         <span id="questionCounter"></span>
-        <span id="categoryPill" class="pill"></span>
+        <div class="pill-group">
+          <span id="levelPill" class="pill subtle-pill"></span>
+          <span id="categoryPill" class="pill"></span>
+        </div>
       </div>
       <div class="progress-track" aria-hidden="true">
         <div id="progressBar" class="progress-bar"></div>
@@ -89,6 +101,10 @@
         <h3>Your assessment summary</h3>
         <p id="summaryText"></p>
         <div class="score-chip-row">
+          <div class="score-chip">
+            <span>Assessment Level</span>
+            <strong id="assessmentLevelValue"></strong>
+          </div>
           <div class="score-chip">
             <span>Total Score</span>
             <strong id="totalScoreValue"></strong>
