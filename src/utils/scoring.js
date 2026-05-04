@@ -63,11 +63,17 @@ function getQuestionWeight(question) {
 }
 
 function getMaxOptionScore(question) {
-  return question.options.reduce((maxScore, option) => Math.max(maxScore, option.score), 0);
+  if (!question.options.length) {
+    return 0;
+  }
+  return question.options.reduce((maxScore, option) => Math.max(maxScore, option.score), -Infinity);
 }
 
 function getMinOptionScore(question) {
-  return question.options.reduce((minScore, option) => Math.min(minScore, option.score), 0);
+  if (!question.options.length) {
+    return 0;
+  }
+  return question.options.reduce((minScore, option) => Math.min(minScore, option.score), Infinity);
 }
 
 function getRatio(result) {
