@@ -131,14 +131,13 @@ The app uses a small in-memory state object to track:
 
 This keeps the MVP understandable while still supporting a complete multi-step flow.
 
+### Assessment History
+
+Each completed assessment is stored in `localStorage` with the selected level, totals, and per-category results. The results summary shows how many sessions are currently saved, keeping progress local to the browser.
+
 ### Scoring Logic
 
-Each answer currently uses a binary score model:
-
-- strongest answer = `1`
-- other answers = `0`
-
-The app totals scores by category, ranks the categories, identifies the two weakest areas, and maps those areas to recommendation content.
+Each answer carries a numeric score, and some questions apply a higher weight. The final category totals use the max score per question multiplied by its weight, so higher-priority questions have more influence. The app totals scores by category, ranks the categories, identifies the two weakest areas, and maps those areas to recommendation content.
 
 ### Recommendation Engine
 
@@ -184,7 +183,8 @@ Using the static server is the more reliable option for local testing.
 
 ### Add or edit questions
 
-Update the relevant level inside `assessmentQuestions` in `app.js`.
+Update the relevant level inside `assessmentQuestions` in `src/data/assessments.js`.
+Each question can include an optional `weight` (default `1`) to make specific prompts count more toward the category score.
 
 Example shape:
 
@@ -192,6 +192,7 @@ Example shape:
 {
   id: "int-js-1",
   category: "javascript",
+  weight: 2,
   prompt: "What is the main difference between Array.forEach() and Array.map()?",
   options: [
     { label: "forEach always mutates the array but map never does", score: 0 },
@@ -227,8 +228,8 @@ The easiest place to start is the CSS variables at the top of the file.
 
 If this moved beyond MVP, the next improvements would be:
 
-- save assessment history with `localStorage`
-- move from binary scoring to weighted scoring
+- expand the saved assessment history view with comparisons over time
+- refine weighted scoring with partial-credit options and tuned weights
 - allow different quiz tracks for different learner goals
 - explain why each weak category was flagged
 - generate downloadable or shareable result summaries

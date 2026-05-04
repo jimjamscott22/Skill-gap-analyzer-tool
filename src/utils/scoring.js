@@ -6,21 +6,25 @@ function evaluateAssessment(answers, questions) {
       totals[question.category] = { score: 0, total: 0 };
     }
 
+    const weight = getQuestionWeight(question);
+    const maxOptionScore = getMaxOptionScore(question);
+    const questionTotal = maxOptionScore * weight;
     const answerIndex = answers[index];
     const answer = question.options[answerIndex];
-    totals[question.category].score += answer.score;
-    totals[question.category].total += 1;
+    const answerScore = answer ? answer.score * weight : 0;
+    totals[question.category].score += answerScore;
+    totals[question.category].total += questionTotal;
   });
 
   const categoryResults = Object.entries(totals)
     .map(([category, values]) => ({ category, ...values }))
-    .sort((left, right) => (right.score / right.total) - (left.score / left.total));
+    .sort((left, right) => getRatio(right) - getRatio(left));
 
   const totalScore = categoryResults.reduce((sum, item) => sum + item.score, 0);
   const totalPossible = categoryResults.reduce((sum, item) => sum + item.total, 0);
   const strongestCategory = categoryResults[0].category;
   const sortedAscending = [...categoryResults].sort(
-    (left, right) => (left.score / left.total) - (right.score / right.total),
+    (left, right) => getRatio(left) - getRatio(right),
   );
   const weakestCategories = sortedAscending.slice(0, 2).map((item) => item.category);
 
@@ -34,7 +38,7 @@ function evaluateAssessment(answers, questions) {
 }
 
 function lookupRecommendation(category, score, total, recommendations) {
-  const ratio = score / total;
+  const ratio = total ? score / total : 0;
   if (ratio < 0.5) {
     return recommendations[category].beginner;
   }
@@ -45,9 +49,27 @@ function lookupRecommendation(category, score, total, recommendations) {
 }
 
 function findCorrectAnswerIndex(question) {
-  return question.options.findIndex((option) => option.score === 1);
+  const maxScore = getMaxOptionScore(question);
+  return question.options.findIndex((option) => option.score === maxScore);
 }
 
 function findIncorrectAnswerIndex(question) {
-  return question.options.findIndex((option) => option.score === 0);
+  const minScore = getMinOptionScore(question);
+  return question.options.findIndex((option) => option.score === minScore);
+}
+
+function getQuestionWeight(question) {
+  return Number.isFinite(question.weight) ? question.weight : 1;
+}
+
+function getMaxOptionScore(question) {
+  return question.options.reduce((maxScore, option) => Math.max(maxScore, option.score), 0);
+}
+
+function getMinOptionScore(question) {
+  return question.options.reduce((minScore, option) => Math.min(minScore, option.score), 0);
+}
+
+function getRatio(result) {
+  return result.total ? result.score / result.total : 0;
 }
