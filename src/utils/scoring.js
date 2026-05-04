@@ -63,17 +63,19 @@ function getQuestionWeight(question) {
 }
 
 function getMaxOptionScore(question) {
-  if (!question.options.length) {
+  const [firstOption, ...restOptions] = question.options;
+  if (!firstOption) {
     return 0;
   }
-  return question.options.reduce((maxScore, option) => Math.max(maxScore, option.score), -Infinity);
+  return restOptions.reduce((maxScore, option) => Math.max(maxScore, option.score), firstOption.score);
 }
 
 function getMinOptionScore(question) {
-  if (!question.options.length) {
+  const [firstOption, ...restOptions] = question.options;
+  if (!firstOption) {
     return 0;
   }
-  return question.options.reduce((minScore, option) => Math.min(minScore, option.score), Infinity);
+  return restOptions.reduce((minScore, option) => Math.min(minScore, option.score), firstOption.score);
 }
 
 function getRatio(result) {
