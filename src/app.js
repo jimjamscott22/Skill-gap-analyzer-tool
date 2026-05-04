@@ -57,7 +57,7 @@ function persistAssessmentHistory(entry) {
   try {
     localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(nextHistory));
   } catch (error) {
-    return nextHistory;
+    console.warn("Unable to save assessment history.", error);
   }
   return nextHistory;
 }

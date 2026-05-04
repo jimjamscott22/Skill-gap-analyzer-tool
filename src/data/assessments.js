@@ -1,3 +1,5 @@
+const ELEVATED_QUESTION_WEIGHT = 2;
+
 const assessmentLevels = {
   beginner: {
     label: "Beginner",
@@ -38,7 +40,7 @@ const assessmentQuestions = {
     {
       id: "beg-html-2",
       category: "html_css",
-      weight: 2,
+      weight: ELEVATED_QUESTION_WEIGHT,
       prompt: "Which CSS layout tool is usually best when you need items aligned in one direction with spacing and wrapping?",
       options: [
         { label: "Flexbox", score: 1 },
@@ -61,7 +63,7 @@ const assessmentQuestions = {
     {
       id: "beg-js-2",
       category: "javascript",
-      weight: 2,
+      weight: ELEVATED_QUESTION_WEIGHT,
       prompt: "Which statement about const in JavaScript is correct?",
       options: [
         { label: "It makes objects deeply immutable", score: 0 },
@@ -84,7 +86,7 @@ const assessmentQuestions = {
     {
       id: "beg-react-2",
       category: "react",
-      weight: 2,
+      weight: ELEVATED_QUESTION_WEIGHT,
       prompt: "Why do lists in React need stable key values?",
       options: [
         { label: "To make JavaScript run faster in every case", score: 0 },
@@ -107,7 +109,7 @@ const assessmentQuestions = {
     {
       id: "beg-ts-2",
       category: "typescript",
-      weight: 2,
+      weight: ELEVATED_QUESTION_WEIGHT,
       prompt: "Which TypeScript type best describes a variable that can be a string or a number?",
       options: [
         { label: "string && number", score: 0 },
@@ -130,7 +132,7 @@ const assessmentQuestions = {
     {
       id: "beg-debug-2",
       category: "debugging",
-      weight: 2,
+      weight: ELEVATED_QUESTION_WEIGHT,
       prompt: "If the browser console shows undefined is not a function, what does that usually suggest?",
       options: [
         { label: "A value is being called like a function when it is not one", score: 1 },
@@ -155,7 +157,7 @@ const assessmentQuestions = {
     {
       id: "int-html-2",
       category: "html_css",
-      weight: 2,
+      weight: ELEVATED_QUESTION_WEIGHT,
       prompt: "Which pattern most improves accessibility for a text input in a form?",
       options: [
         { label: "Relying on placeholder text only", score: 0 },
@@ -178,7 +180,7 @@ const assessmentQuestions = {
     {
       id: "int-js-2",
       category: "javascript",
-      weight: 2,
+      weight: ELEVATED_QUESTION_WEIGHT,
       prompt: "You need to wait for two API calls before rendering a screen. Which pattern is usually most appropriate?",
       options: [
         { label: "Promise.all() with async/await", score: 1 },
@@ -201,7 +203,7 @@ const assessmentQuestions = {
     {
       id: "int-react-2",
       category: "react",
-      weight: 2,
+      weight: ELEVATED_QUESTION_WEIGHT,
       prompt: "When using useEffect, which dependency choice is safest when the effect reads a prop called userId?",
       options: [
         { label: "An empty dependency array every time", score: 0 },
@@ -224,7 +226,7 @@ const assessmentQuestions = {
     {
       id: "int-ts-2",
       category: "typescript",
-      weight: 2,
+      weight: ELEVATED_QUESTION_WEIGHT,
       prompt: "Why is typing a function parameter better than leaving it as any in most cases?",
       options: [
         { label: "It guarantees the function will never fail", score: 0 },
@@ -247,7 +249,7 @@ const assessmentQuestions = {
     {
       id: "int-debug-2",
       category: "debugging",
-      weight: 2,
+      weight: ELEVATED_QUESTION_WEIGHT,
       prompt: "Which practice best reduces the chance of reintroducing a fixed bug later?",
       options: [
         { label: "Closing the ticket as soon as the error disappears locally", score: 0 },
@@ -272,7 +274,7 @@ const assessmentQuestions = {
     {
       id: "adv-html-2",
       category: "html_css",
-      weight: 2,
+      weight: ELEVATED_QUESTION_WEIGHT,
       prompt: "Which change most improves keyboard accessibility for a custom clickable card component?",
       options: [
         { label: "Keeping it as a <div> and adding only a hover style", score: 0 },
@@ -295,7 +297,7 @@ const assessmentQuestions = {
     {
       id: "adv-js-2",
       category: "javascript",
-      weight: 2,
+      weight: ELEVATED_QUESTION_WEIGHT,
       prompt: "You need to handle one failed request without losing successful results from several others. Which pattern is most appropriate?",
       options: [
         { label: "Promise.all() because it ignores rejections", score: 0 },
@@ -318,7 +320,7 @@ const assessmentQuestions = {
     {
       id: "adv-react-2",
       category: "react",
-      weight: 2,
+      weight: ELEVATED_QUESTION_WEIGHT,
       prompt: "A list item component loses user input when the list reorders. What is the most likely cause?",
       options: [
         { label: "The component uses semantic HTML", score: 0 },
@@ -341,7 +343,7 @@ const assessmentQuestions = {
     {
       id: "adv-ts-2",
       category: "typescript",
-      weight: 2,
+      weight: ELEVATED_QUESTION_WEIGHT,
       prompt: "A union type is narrowed inside an if statement that checks kind === 'loaded'. What is the main benefit?",
       options: [
         { label: "TypeScript can treat the value as the loaded variant in that branch", score: 1 },
@@ -364,7 +366,7 @@ const assessmentQuestions = {
     {
       id: "adv-debug-2",
       category: "debugging",
-      weight: 2,
+      weight: ELEVATED_QUESTION_WEIGHT,
       prompt: "Several symptoms appear after a refactor. Which approach is most likely to reveal the root cause quickly?",
       options: [
         { label: "Revert random files until the app feels stable", score: 0 },
