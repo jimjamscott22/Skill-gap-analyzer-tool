@@ -59,7 +59,7 @@ function findIncorrectAnswerIndex(question) {
 }
 
 function getQuestionWeight(question) {
-  return typeof question.weight === "number" && Number.isFinite(question.weight) ? question.weight : 1;
+  return Number.isFinite(question.weight) ? question.weight : 1;
 }
 
 function getMaxOptionScore(question) {

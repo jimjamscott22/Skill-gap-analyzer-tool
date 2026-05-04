@@ -137,7 +137,7 @@ Each completed assessment is stored in `localStorage` with the selected level, t
 
 ### Scoring Logic
 
-Each answer carries a numeric score, and some questions apply a higher weight. The final category totals use the max score per question multiplied by its weight, so higher-priority questions have more influence. The app totals scores by category, ranks the categories, identifies the two weakest areas, and maps those areas to recommendation content.
+Each answer carries a numeric score, and some questions apply a higher weight. The current data gives the second question in each category a 2x weight (`ELEVATED_QUESTION_WEIGHT`) to emphasize the more applied prompt. The final category totals use the max score per question multiplied by its weight, so higher-priority questions have more influence. The app totals scores by category, ranks the categories, identifies the two weakest areas, and maps those areas to recommendation content.
 
 ### Recommendation Engine
 
