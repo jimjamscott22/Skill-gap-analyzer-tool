@@ -1,6 +1,8 @@
 const demoMode = new URLSearchParams(window.location.search).get("demo");
 const levelFromQuery = new URLSearchParams(window.location.search).get("level");
 const defaultLevel = Object.hasOwn(assessmentLevels, levelFromQuery) ? levelFromQuery : "beginner";
+const HISTORY_STORAGE_KEY = "skillGapHistory";
+const HISTORY_LIMIT = 10;
 
 const state = {
   screen: "intro",
@@ -8,6 +10,7 @@ const state = {
   currentQuestionIndex: 0,
   answers: createEmptyAnswers(defaultLevel),
   result: null,
+  history: loadAssessmentHistory(),
 };
 
 const app = document.getElementById("app");
@@ -33,6 +36,42 @@ function getCurrentQuestions() {
 
 function cloneTemplate(name) {
   return templates[name].content.cloneNode(true);
+}
+
+function loadAssessmentHistory() {
+  try {
+    const stored = localStorage.getItem(HISTORY_STORAGE_KEY);
+    if (!stored) {
+      return [];
+    }
+    const parsed = JSON.parse(stored);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function persistAssessmentHistory(entry) {
+  const history = loadAssessmentHistory();
+  const nextHistory = [entry, ...history].slice(0, HISTORY_LIMIT);
+  try {
+    localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(nextHistory));
+  } catch (error) {
+    console.warn("Unable to save assessment history.", error);
+  }
+  return nextHistory;
+}
+
+function createHistoryEntry(result) {
+  return {
+    timestamp: new Date().toISOString(),
+    level: state.selectedLevel,
+    totalScore: result.totalScore,
+    totalPossible: result.totalPossible,
+    strongestCategory: result.strongestCategory,
+    weakestCategories: result.weakestCategories,
+    categoryResults: result.categoryResults,
+  };
 }
 
 function render() {
@@ -156,8 +195,7 @@ function renderQuiz() {
     }
 
     if (state.currentQuestionIndex === questions.length - 1) {
-      state.result = evaluateAssessment(state.answers, getCurrentQuestions());
-      state.screen = "results";
+      finalizeAssessment();
     } else {
       state.currentQuestionIndex += 1;
     }
@@ -166,6 +204,12 @@ function renderQuiz() {
   });
 
   app.appendChild(fragment);
+}
+
+function finalizeAssessment() {
+  state.result = evaluateAssessment(state.answers, getCurrentQuestions());
+  state.history = persistAssessmentHistory(createHistoryEntry(state.result));
+  state.screen = "results";
 }
 
 function renderResults() {
@@ -178,12 +222,13 @@ function renderResults() {
   fragment.getElementById("assessmentLevelValue").textContent = levelConfig.label;
   fragment.getElementById("totalScoreValue").textContent = `${totalScore}/${totalPossible}`;
   fragment.getElementById("topStrengthValue").textContent = categories[strongestCategory];
+  fragment.getElementById("historyCountValue").textContent = String(state.history.length);
 
   const breakdownList = fragment.getElementById("scoreBreakdown");
   categoryResults.forEach((result) => {
     const item = document.createElement("div");
     item.className = "breakdown-item";
-    const percentage = Math.round((result.score / result.total) * 100);
+    const percentage = result.total ? Math.round((result.score / result.total) * 100) : 0;
     item.innerHTML = `
       <div class="breakdown-top">
         <strong>${categories[result.category]}</strong>
@@ -263,8 +308,7 @@ function runDemo(mode) {
 
   state.answers = selectedAnswers;
   state.currentQuestionIndex = questions.length - 1;
-  state.result = evaluateAssessment(state.answers, getCurrentQuestions());
-  state.screen = "results";
+  finalizeAssessment();
   render();
 }
 
