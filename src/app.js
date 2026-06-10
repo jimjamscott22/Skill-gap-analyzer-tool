@@ -1,14 +1,18 @@
-const demoMode = new URLSearchParams(window.location.search).get("demo");
-const levelFromQuery = new URLSearchParams(window.location.search).get("level");
+const queryParams = new URLSearchParams(window.location.search);
+const demoMode = queryParams.get("demo");
+const levelFromQuery = queryParams.get("level");
+const goalFromQuery = queryParams.get("goal");
 const defaultLevel = Object.hasOwn(assessmentLevels, levelFromQuery) ? levelFromQuery : "beginner";
+const defaultGoal = getDefaultGoal(goalFromQuery);
 const HISTORY_STORAGE_KEY = "skillGapHistory";
 const HISTORY_LIMIT = 10;
 
 const state = {
   screen: "intro",
   selectedLevel: defaultLevel,
+  selectedGoal: defaultGoal,
   currentQuestionIndex: 0,
-  answers: createEmptyAnswers(defaultLevel),
+  answers: createEmptyAnswers(defaultLevel, defaultGoal),
   result: null,
   history: loadAssessmentHistory(),
 };
@@ -22,8 +26,8 @@ const templates = {
   results: document.getElementById("resultsTemplate"),
 };
 
-function createEmptyAnswers(level = state.selectedLevel) {
-  return new Array(assessmentQuestions[level].length).fill(null);
+function createEmptyAnswers(level = state.selectedLevel, goalKey = state.selectedGoal) {
+  return new Array(getAssessmentQuestions(level, goalKey).length).fill(null);
 }
 
 function getLevelConfig(level = state.selectedLevel) {
@@ -31,7 +35,7 @@ function getLevelConfig(level = state.selectedLevel) {
 }
 
 function getCurrentQuestions() {
-  return assessmentQuestions[state.selectedLevel];
+  return getAssessmentQuestions(state.selectedLevel, state.selectedGoal);
 }
 
 function cloneTemplate(name) {
@@ -66,6 +70,7 @@ function createHistoryEntry(result) {
   return {
     timestamp: new Date().toISOString(),
     level: state.selectedLevel,
+    goal: state.selectedGoal,
     totalScore: result.totalScore,
     totalPossible: result.totalPossible,
     strongestCategory: result.strongestCategory,
@@ -124,7 +129,7 @@ function renderIntro() {
     button.addEventListener("click", () => {
       state.selectedLevel = levelKey;
       state.currentQuestionIndex = 0;
-      state.answers = createEmptyAnswers(levelKey);
+      state.answers = createEmptyAnswers();
       state.result = null;
       render();
     });
