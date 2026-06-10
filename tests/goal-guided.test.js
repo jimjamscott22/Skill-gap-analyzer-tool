@@ -96,3 +96,20 @@ assert.equal(readiness.priorityScores.length, 3);
 assert.equal(readiness.priorityScores[0].category, "React / JSX Concepts");
 assert.equal(readiness.nextActions.length, 3);
 assert.match(readiness.message, /React Developer/);
+
+const customGoals = {
+  custom: {
+    label: "Custom Developer",
+    resultFrame: "Focus on the custom path.",
+    priorityCategories: ["react"],
+    nextActions: ["Practice custom goals."],
+  },
+};
+const customReadiness = app.createGoalReadinessSummary(
+  "unknown",
+  categoryResults,
+  customGoals,
+  app.categories,
+);
+assert.equal(customReadiness.goalLabel, "Custom Developer");
+assert.match(customReadiness.message, /Custom Developer/);

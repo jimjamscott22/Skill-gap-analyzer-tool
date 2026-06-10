@@ -85,7 +85,13 @@ function getRatio(result) {
 const DEFAULT_GOAL_KEY = "frontend";
 
 function getDefaultGoal(goalKey, goals = careerGoals) {
-  return Object.hasOwn(goals, goalKey) ? goalKey : DEFAULT_GOAL_KEY;
+  if (Object.hasOwn(goals, goalKey)) {
+    return goalKey;
+  }
+  if (Object.hasOwn(goals, DEFAULT_GOAL_KEY)) {
+    return DEFAULT_GOAL_KEY;
+  }
+  return Object.keys(goals)[0];
 }
 
 function getAssessmentQuestions(level, goalKey) {
