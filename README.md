@@ -168,7 +168,7 @@ Open `index.html` in a browser.
 From the project directory:
 
 ```powershell
-node tmp_static_server.js
+node dev/tmp_static_server.js
 ```
 
 Then open:
