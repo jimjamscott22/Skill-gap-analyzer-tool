@@ -1,0 +1,76 @@
+<h2>Goal-Guided Assessment Flow</h2>
+<p class="subtitle">A first-pass product design for adding career-goal onboarding without making the app heavy.</p>
+
+<div class="mockup">
+  <div class="mockup-header">Proposed first screen and assessment path</div>
+  <div class="mockup-body">
+    <div style="display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:start">
+      <div style="display:grid;gap:14px">
+        <div class="label">Step 1</div>
+        <div style="border:1px solid #d8d8d8;border-radius:14px;padding:18px;background:white">
+          <h3 style="margin-top:0">Choose your career goal</h3>
+          <div style="display:grid;gap:10px">
+            <button class="mock-button" style="text-align:left">Frontend Developer<br><small>HTML, CSS, JS, accessibility, debugging</small></button>
+            <button class="mock-button" style="text-align:left">React Developer<br><small>Components, state, effects, TypeScript</small></button>
+            <button class="mock-button" style="text-align:left">Full-Stack Developer<br><small>Frontend foundations plus APIs and data thinking</small></button>
+          </div>
+        </div>
+
+        <div class="label">Step 2</div>
+        <div style="border:1px solid #d8d8d8;border-radius:14px;padding:18px;background:white">
+          <h3 style="margin-top:0">Pick your assessment level</h3>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            <div class="placeholder">Beginner</div>
+            <div class="placeholder">Intermediate</div>
+            <div class="placeholder">Advanced</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;gap:14px">
+        <div class="label">Step 3</div>
+        <div style="border:1px solid #d8d8d8;border-radius:14px;padding:18px;background:white">
+          <h3 style="margin-top:0">Run the assessment</h3>
+          <p style="margin-bottom:12px">Base questions still cover the five current categories.</p>
+          <div class="placeholder">10 core questions</div>
+          <div style="height:10px"></div>
+          <div class="placeholder">+ 2 goal-specific questions</div>
+        </div>
+
+        <div class="label">Step 4</div>
+        <div style="border:1px solid #d8d8d8;border-radius:14px;padding:18px;background:white">
+          <h3 style="margin-top:0">Results with a goal lens</h3>
+          <div class="placeholder">Readiness summary for selected goal</div>
+          <div style="height:10px"></div>
+          <div class="placeholder">Priority skills and next actions</div>
+          <div style="height:10px"></div>
+          <div class="placeholder">Core category breakdown remains visible</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="approve-flow" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>This flow works</h3>
+      <p>Use this as the basis for the design spec.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="simpler-flow" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Make it simpler</h3>
+      <p>Reduce the number of steps or avoid adding goal-specific questions for now.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="deeper-flow" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Make it deeper</h3>
+      <p>Give goals more influence over quiz content, scoring, or the result page.</p>
+    </div>
+  </div>
+</div>
