@@ -82,8 +82,10 @@ function getRatio(result) {
   return result.total ? result.score / result.total : 0;
 }
 
-function getDefaultGoal(goalKey) {
-  return Object.hasOwn(careerGoals, goalKey) ? goalKey : "frontend";
+const DEFAULT_GOAL_KEY = "frontend";
+
+function getDefaultGoal(goalKey, goals = careerGoals) {
+  return Object.hasOwn(goals, goalKey) ? goalKey : DEFAULT_GOAL_KEY;
 }
 
 function getAssessmentQuestions(level, goalKey) {
@@ -94,7 +96,7 @@ function getAssessmentQuestions(level, goalKey) {
 }
 
 function createGoalReadinessSummary(goalKey, categoryResults, careerGoals, categories) {
-  const selectedGoal = careerGoals[getDefaultGoal(goalKey)];
+  const selectedGoal = careerGoals[getDefaultGoal(goalKey, careerGoals)];
   const priorityScores = selectedGoal.priorityCategories.map((categoryKey) => {
     const result = categoryResults.find((item) => item.category === categoryKey) || {
       category: categoryKey,

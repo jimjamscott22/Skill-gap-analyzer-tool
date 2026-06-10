@@ -79,6 +79,7 @@ assert.equal(advancedReactQuestions.length, app.assessmentQuestions.advanced.len
 
 const missingGoalQuestions = app.getAssessmentQuestions("beginner", "unknown-goal");
 assert.equal(missingGoalQuestions.length, app.assessmentQuestions.beginner.length + 2);
+assert.equal(missingGoalQuestions.at(-1).id.startsWith("goal-frontend-beg-"), true);
 
 assert.equal(app.getDefaultGoal("react"), "react");
 assert.equal(app.getDefaultGoal("not-real"), "frontend");
