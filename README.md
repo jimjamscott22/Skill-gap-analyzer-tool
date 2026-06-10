@@ -107,11 +107,14 @@ No framework or build step is required.
 |-- .gitignore
 |-- LICENSE
 |-- README.md
-|-- app.js
 |-- index.html
 |-- progress.md
-|-- styles.css
-`-- tmp_static_server.js
+|-- src/
+|   |-- app.js
+|   |-- styles.css
+|   `-- data/
+`-- dev/
+  `-- tmp_static_server.js
 ```
 
 ## Key Implementation Details
@@ -165,7 +168,7 @@ Open `index.html` in a browser.
 
 ### Option 2: Use the included static server
 
-From the project directory:
+From the repo root, run:
 
 ```powershell
 node dev/tmp_static_server.js
