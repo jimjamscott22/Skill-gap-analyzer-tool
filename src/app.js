@@ -123,7 +123,7 @@ function renderIntro() {
         <span class="pill subtle-pill">${config.subtitle}</span>
       </span>
       <span class="level-card-copy">${config.description}</span>
-      <span class="level-card-meta">${assessmentQuestions[levelKey].length} questions • ${config.duration}</span>
+      <span class="level-card-meta">${getAssessmentQuestions(levelKey, state.selectedGoal).length} questions • ${config.duration}</span>
     `;
 
     button.addEventListener("click", () => {
@@ -325,6 +325,7 @@ window.render_game_to_text = function renderGameToText() {
     mode: state.screen,
     note: "UI app state, no spatial coordinate system",
     selectedLevel: state.selectedLevel,
+    selectedGoal: state.selectedGoal,
     currentQuestionIndex: state.currentQuestionIndex,
     answeredCount,
     totalQuestions: getCurrentQuestions().length,
