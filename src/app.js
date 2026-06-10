@@ -1,14 +1,18 @@
-const demoMode = new URLSearchParams(window.location.search).get("demo");
-const levelFromQuery = new URLSearchParams(window.location.search).get("level");
+const queryParams = new URLSearchParams(window.location.search);
+const demoMode = queryParams.get("demo");
+const levelFromQuery = queryParams.get("level");
+const goalFromQuery = queryParams.get("goal");
 const defaultLevel = Object.hasOwn(assessmentLevels, levelFromQuery) ? levelFromQuery : "beginner";
+const defaultGoal = getDefaultGoal(goalFromQuery);
 const HISTORY_STORAGE_KEY = "skillGapHistory";
 const HISTORY_LIMIT = 10;
 
 const state = {
   screen: "intro",
   selectedLevel: defaultLevel,
+  selectedGoal: defaultGoal,
   currentQuestionIndex: 0,
-  answers: createEmptyAnswers(defaultLevel),
+  answers: createEmptyAnswers(defaultLevel, defaultGoal),
   result: null,
   history: loadAssessmentHistory(),
 };
@@ -22,8 +26,8 @@ const templates = {
   results: document.getElementById("resultsTemplate"),
 };
 
-function createEmptyAnswers(level = state.selectedLevel) {
-  return new Array(assessmentQuestions[level].length).fill(null);
+function createEmptyAnswers(level = state.selectedLevel, goalKey = state.selectedGoal) {
+  return new Array(getAssessmentQuestions(level, goalKey).length).fill(null);
 }
 
 function getLevelConfig(level = state.selectedLevel) {
@@ -31,7 +35,7 @@ function getLevelConfig(level = state.selectedLevel) {
 }
 
 function getCurrentQuestions() {
-  return assessmentQuestions[state.selectedLevel];
+  return getAssessmentQuestions(state.selectedLevel, state.selectedGoal);
 }
 
 function cloneTemplate(name) {
@@ -66,6 +70,7 @@ function createHistoryEntry(result) {
   return {
     timestamp: new Date().toISOString(),
     level: state.selectedLevel,
+    goal: state.selectedGoal,
     totalScore: result.totalScore,
     totalPossible: result.totalPossible,
     strongestCategory: result.strongestCategory,
@@ -96,11 +101,51 @@ function render() {
 
 function renderIntro() {
   const fragment = cloneTemplate("intro");
+  const careerGoalList = fragment.getElementById("careerGoalList");
+  const goalDescription = fragment.getElementById("selectedGoalDescription");
+  const goalTags = fragment.getElementById("selectedGoalTags");
   const levelList = fragment.getElementById("assessmentLevelList");
   const levelDescription = fragment.getElementById("selectedLevelDescription");
   const levelQuestionCount = fragment.getElementById("selectedLevelQuestionCount");
   const levelDuration = fragment.getElementById("selectedLevelDuration");
   const startBtn = fragment.getElementById("startBtn");
+
+  Object.entries(careerGoals).forEach(([goalKey, config]) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "goal-card";
+    button.setAttribute("aria-pressed", String(state.selectedGoal === goalKey));
+
+    if (state.selectedGoal === goalKey) {
+      button.classList.add("selected");
+    }
+
+    button.innerHTML = `
+      <span class="level-card-top">
+        <strong>${config.label}</strong>
+      </span>
+      <span class="level-card-copy">${config.description}</span>
+      <span class="tag-list">${config.priorityCategories
+        .map((category) => `<span class="skill-tag">${categories[category]}</span>`)
+        .join("")}</span>
+    `;
+
+    button.addEventListener("click", () => {
+      state.selectedGoal = goalKey;
+      state.currentQuestionIndex = 0;
+      state.answers = createEmptyAnswers();
+      state.result = null;
+      render();
+    });
+
+    careerGoalList.appendChild(button);
+  });
+
+  const goalConfig = careerGoals[state.selectedGoal];
+  goalDescription.textContent = goalConfig.setupCopy;
+  goalTags.innerHTML = goalConfig.priorityCategories
+    .map((category) => `<span class="skill-tag">${categories[category]}</span>`)
+    .join("");
 
   Object.entries(assessmentLevels).forEach(([levelKey, config]) => {
     const button = document.createElement("button");
@@ -118,13 +163,13 @@ function renderIntro() {
         <span class="pill subtle-pill">${config.subtitle}</span>
       </span>
       <span class="level-card-copy">${config.description}</span>
-      <span class="level-card-meta">${assessmentQuestions[levelKey].length} questions • ${config.duration}</span>
+      <span class="level-card-meta">${getAssessmentQuestions(levelKey, state.selectedGoal).length} questions • ${config.duration}</span>
     `;
 
     button.addEventListener("click", () => {
       state.selectedLevel = levelKey;
       state.currentQuestionIndex = 0;
-      state.answers = createEmptyAnswers(levelKey);
+      state.answers = createEmptyAnswers();
       state.result = null;
       render();
     });
@@ -135,7 +180,7 @@ function renderIntro() {
   levelDescription.textContent = getLevelConfig().description;
   levelQuestionCount.textContent = String(getCurrentQuestions().length);
   levelDuration.textContent = getLevelConfig().duration;
-  startBtn.textContent = `Start ${getLevelConfig().label} Assessment`;
+  startBtn.textContent = `Start ${careerGoals[state.selectedGoal].label} Assessment`;
   startBtn.addEventListener("click", startAssessment);
 
   app.appendChild(fragment);
@@ -320,6 +365,7 @@ window.render_game_to_text = function renderGameToText() {
     mode: state.screen,
     note: "UI app state, no spatial coordinate system",
     selectedLevel: state.selectedLevel,
+    selectedGoal: state.selectedGoal,
     currentQuestionIndex: state.currentQuestionIndex,
     answeredCount,
     totalQuestions: getCurrentQuestions().length,
