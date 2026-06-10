@@ -64,7 +64,11 @@ const app = context.__exports;
 
 assert.deepEqual(Object.keys(app.careerGoals), ["frontend", "react", "fullstack"]);
 assert.equal(app.careerGoals.frontend.label, "Frontend Developer");
-assert.deepEqual(app.careerGoals.react.priorityCategories, ["react", "typescript", "debugging"]);
+assert.deepEqual(Array.from(app.careerGoals.react.priorityCategories), [
+  "react",
+  "typescript",
+  "debugging",
+]);
 
 const beginnerFrontendQuestions = app.getAssessmentQuestions("beginner", "frontend");
 assert.equal(beginnerFrontendQuestions.length, app.assessmentQuestions.beginner.length + 2);
@@ -74,7 +78,7 @@ const advancedReactQuestions = app.getAssessmentQuestions("advanced", "react");
 assert.equal(advancedReactQuestions.length, app.assessmentQuestions.advanced.length + 2);
 
 const missingGoalQuestions = app.getAssessmentQuestions("beginner", "unknown-goal");
-assert.equal(missingGoalQuestions.length, app.assessmentQuestions.beginner.length);
+assert.equal(missingGoalQuestions.length, app.assessmentQuestions.beginner.length + 2);
 
 assert.equal(app.getDefaultGoal("react"), "react");
 assert.equal(app.getDefaultGoal("not-real"), "frontend");

@@ -81,3 +81,45 @@ function getMinOptionScore(question) {
 function getRatio(result) {
   return result.total ? result.score / result.total : 0;
 }
+
+function getDefaultGoal(goalKey) {
+  return Object.hasOwn(careerGoals, goalKey) ? goalKey : "frontend";
+}
+
+function getAssessmentQuestions(level, goalKey) {
+  const coreQuestions = assessmentQuestions[level] || [];
+  const selectedGoal = getDefaultGoal(goalKey);
+  const focusedQuestions = goalQuestions[selectedGoal]?.[level] || [];
+  return [...coreQuestions, ...focusedQuestions];
+}
+
+function createGoalReadinessSummary(goalKey, categoryResults, careerGoals, categories) {
+  const selectedGoal = careerGoals[getDefaultGoal(goalKey)];
+  const priorityScores = selectedGoal.priorityCategories.map((categoryKey) => {
+    const result = categoryResults.find((item) => item.category === categoryKey) || {
+      category: categoryKey,
+      score: 0,
+      total: 0,
+    };
+    const percentage = result.total ? Math.round((result.score / result.total) * 100) : 0;
+    return {
+      category: categories[categoryKey],
+      score: result.score,
+      total: result.total,
+      percentage,
+    };
+  });
+
+  const averagePriorityScore = priorityScores.length
+    ? Math.round(
+        priorityScores.reduce((sum, item) => sum + item.percentage, 0) / priorityScores.length,
+      )
+    : 0;
+
+  return {
+    goalLabel: selectedGoal.label,
+    message: `${selectedGoal.label} readiness: ${selectedGoal.resultFrame} Your priority-category average is ${averagePriorityScore}%.`,
+    priorityScores,
+    nextActions: selectedGoal.nextActions,
+  };
+}
