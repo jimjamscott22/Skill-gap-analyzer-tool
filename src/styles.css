@@ -164,6 +164,7 @@ input {
 .primary-button,
 .ghost-button,
 .option-button,
+.goal-card,
 .level-card {
   border: 0;
   border-radius: 999px;
@@ -186,6 +187,7 @@ input {
 .primary-button:hover,
 .ghost-button:hover,
 .option-button:hover,
+.goal-card:hover,
 .level-card:hover {
   transform: translateY(-1px);
 }
@@ -278,10 +280,44 @@ input {
   box-shadow: inset 0 0 0 1px rgba(203, 81, 34, 0.16);
 }
 
+.goal-list,
 .level-list {
   display: grid;
   gap: 12px;
-  margin-bottom: 18px;
+}
+
+.goal-summary,
+.level-summary {
+  margin: 14px 0 22px;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-tag {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 7px 9px;
+  border-radius: 999px;
+  background: rgba(41, 114, 87, 0.1);
+  color: var(--success);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.goal-card {
+  width: 100%;
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid var(--line);
 }
 
 .level-card {
@@ -296,10 +332,11 @@ input {
   border: 1px solid rgba(27, 26, 23, 0.1);
 }
 
+.goal-card.selected,
 .level-card.selected {
-  background: rgba(239, 111, 60, 0.12);
-  border-color: rgba(203, 81, 34, 0.5);
-  box-shadow: inset 0 0 0 1px rgba(203, 81, 34, 0.16);
+  background: var(--surface-strong);
+  outline: 2px solid var(--accent);
+  box-shadow: 0 12px 24px rgba(203, 81, 34, 0.12);
 }
 
 .level-card-top {
@@ -311,6 +348,7 @@ input {
 
 .level-card-copy,
 .level-card-meta,
+.goal-summary p,
 .level-summary p {
   color: var(--muted);
   line-height: 1.6;
@@ -329,10 +367,7 @@ input {
   letter-spacing: 0.04em;
 }
 
-.level-summary {
-  margin-bottom: 24px;
-}
-
+.goal-summary p,
 .level-summary p {
   margin: 0;
 }
